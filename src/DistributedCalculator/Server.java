@@ -22,14 +22,9 @@ public class Server {
                 System.out.println("server is listening");
                 Socket socket = serverSocket.accept();
                 System.out.println("Got a Connection");
-                Thread tt = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Handler handler = new Handler(socket);
 
-                    }
-                });
-                tt.start();
+                Handler handler = new Handler(socket);
+
 
             }
         } catch (IOException e) {

@@ -1,7 +1,7 @@
-import DistributedCalculator.Client;
-import DistributedCalculator.Server;
+package DistributedCalculator;
 
-public class Main {
+
+public class CalcRunProg {
 
     public static void main(String[] args) {
         Thread t = new Thread(new Runnable() {
