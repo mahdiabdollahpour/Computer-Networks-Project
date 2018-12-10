@@ -1,29 +1,25 @@
-package DistributedCalculator;
+package P2PFileSharing;
 
+public class Main {
 
-public class CalcRunProg {
 
     public static void main(String[] args) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                Server server = new Server(5000);
-//                server.waitForConnection();
+                Tracker tracker = new Tracker(5000);
+//                tracker.start();
             }
         });
         t.start();
-
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Client client = new Client("127.0.0.1", 5000);
-        client.askCalc("ADD", 32, 56);
-
+        Peer peer = new Peer("127.0.0.1",5000);
+        peer.getPeersList();
 
 
     }
-
 }
