@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3931f1d1-c948-438a-a21f-db5dc8a62de8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/P2PFileSharing/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Computer_Networks_Project/Main$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Computer_Networks_Project/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,34 +19,37 @@
     <session id="728008916">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.12" value="3" />
           <entry key="project.open.time.14" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.18" value="1" />
+          <entry key="project.open.time.47" value="1" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="2" />
-          <entry key="java" value="25" />
+          <entry key="java" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="2" />
-          <entry key="JAVA" value="25" />
+          <entry key="JAVA" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="28" />
-          <entry key="java" value="4564" />
+          <entry key="java" value="7617" />
+          <entry key="txt" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4564" />
-          <entry key="PLAIN_TEXT" value="28" />
+          <entry key="JAVA" value="7617" />
+          <entry key="PLAIN_TEXT" value="49" />
         </counts>
       </usages-collector>
     </session>
@@ -57,13 +57,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Peer.java">
+        <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="85" column="102" lean-forward="true" selection-start-line="85" selection-start-column="102" selection-end-line="85" selection-end-column="102" />
+            <state relative-caret-position="191">
+              <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="class#File#0;class#Peer#0" />
               </folding>
             </state>
           </provider>
@@ -72,17 +71,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
+            <state relative-caret-position="306">
+              <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Tracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="43" column="61" lean-forward="true" selection-start-line="43" selection-start-column="61" selection-end-line="43" selection-end-column="61" />
+            <state relative-caret-position="221">
+              <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -93,11 +92,34 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+            <state relative-caret-position="378">
+              <caret line="37" column="3" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="3" />
               <folding>
                 <element signature="e#240#241#0" expanded="true" />
-                <element signature="e#281#282#0" expanded="true" />
+                <element signature="e#279#280#0" expanded="true" />
+                <element signature="e#308#309#0" expanded="true" />
+                <element signature="e#333#334#0" expanded="true" />
+                <element signature="e#361#362#0" expanded="true" />
+                <element signature="e#388#389#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Peer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-863">
+              <caret line="164" column="77" selection-start-line="164" selection-start-column="77" selection-end-line="164" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="class#File#0;class#Peer#0" />
+                <element signature="method#File#1;class#File#0;class#Peer#0" />
+                <element signature="method#getFile#0;class#File#0;class#Peer#0" />
+                <element signature="method#storeFile#0;class#File#0;class#Peer#0" />
+                <element signature="class#FileSearch#0;class#Peer#0" />
+                <element signature="method#askNextForFile#0;class#Peer#0" />
+                <element signature="method#getPeersList#0;class#Peer#0" />
               </folding>
             </state>
           </provider>
@@ -108,6 +130,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -125,10 +148,13 @@
         <option value="$PROJECT_DIR$/src/DistributedCalculator/Main.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Server.java" />
         <option value="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" />
-        <option value="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" />
-        <option value="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Main.java" />
+        <option value="$PROJECT_DIR$/src/Lab.java" />
+        <option value="$PROJECT_DIR$/src/P2PFileSharing/MessageType.java" />
+        <option value="$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" />
+        <option value="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" />
+        <option value="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" />
       </list>
     </option>
   </component>
@@ -150,6 +176,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -178,15 +207,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544437986646" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544656627302" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -202,9 +228,16 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Lab">
     <configuration name="CalcRunProg" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DistributedCalculator.CalcRunProg" />
+      <module name="Computer_Networks_Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Lab" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Lab" />
       <module name="Computer_Networks_Project" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -226,9 +259,11 @@
     <list>
       <item itemvalue="Application.CalcRunProg" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Lab" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Lab" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.CalcRunProg" />
       </list>
@@ -247,12 +282,22 @@
       <workItem from="1544332030174" duration="41000" />
       <workItem from="1544350518734" duration="8317000" />
       <workItem from="1544393509552" duration="3208000" />
-      <workItem from="1544424271312" duration="7135000" />
+      <workItem from="1544424271312" duration="8555000" />
+      <workItem from="1544447426954" duration="3082000" />
+      <workItem from="1544644494610" duration="8736000" />
     </task>
+    <task id="LOCAL-00001" summary="improvment on P2P">
+      <created>1544438568423</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1544438568423</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18701000" />
+    <option name="totallyTimeSpent" value="31939000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -267,7 +312,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26153848" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18299595" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -302,6 +347,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="improvment on P2P" />
+    <option name="LAST_COMMIT_MESSAGE" value="improvment on P2P" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_121/src.zip!/java/net/SocketInputStream.java">
@@ -371,10 +420,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-          <folding>
-            <element signature="e#1026#1027#0" expanded="true" />
-            <element signature="e#1051#1052#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -422,41 +467,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Peer.java">
+    <entry file="file://$PROJECT_DIR$/src/Lab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="85" column="102" lean-forward="true" selection-start-line="85" selection-start-column="102" selection-end-line="85" selection-end-column="102" />
+        <state relative-caret-position="221">
+          <caret line="13" column="12" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#File#0;class#Peer#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/MessageType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="25" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Tracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
+        <state relative-caret-position="378">
+          <caret line="37" column="3" selection-start-line="37" selection-start-column="3" selection-end-line="37" selection-end-column="3" />
           <folding>
             <element signature="e#240#241#0" expanded="true" />
-            <element signature="e#281#282#0" expanded="true" />
+            <element signature="e#279#280#0" expanded="true" />
+            <element signature="e#308#309#0" expanded="true" />
+            <element signature="e#333#334#0" expanded="true" />
+            <element signature="e#361#362#0" expanded="true" />
+            <element signature="e#388#389#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Peer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Tracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="43" column="61" lean-forward="true" selection-start-line="43" selection-start-column="61" selection-end-line="43" selection-end-column="61" />
+        <state relative-caret-position="-863">
+          <caret line="164" column="77" selection-start-line="164" selection-start-column="77" selection-end-line="164" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="class#File#0;class#Peer#0" />
+            <element signature="method#File#1;class#File#0;class#Peer#0" />
+            <element signature="method#getFile#0;class#File#0;class#Peer#0" />
+            <element signature="method#storeFile#0;class#File#0;class#Peer#0" />
+            <element signature="class#FileSearch#0;class#Peer#0" />
+            <element signature="method#askNextForFile#0;class#Peer#0" />
+            <element signature="method#getPeersList#0;class#Peer#0" />
           </folding>
         </state>
       </provider>
