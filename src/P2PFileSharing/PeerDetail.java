@@ -15,7 +15,7 @@ public class PeerDetail {
 
     @Override
     public String toString() {
-        return ip + "," + port + "," ;
+        return ip + "," + port ;
     }
 
     public String getIp() {

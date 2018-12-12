@@ -97,17 +97,15 @@ public class Peer extends BaseNode implements Runnable {
     private String trackerIP;
     private int trackerPort;
 
-    public Peer(String trackerIP, int trackerPort) {
+    public Peer(String trackerIP, int trackerPort, int peerPort) {
+        super(peerPort);
         this.trackerIP = trackerIP;
         this.trackerPort = trackerPort;
         fileSearches = new ArrayList<>();
         files = new ArrayList<>();
-        try {
-            datagramSocket = new DatagramSocket();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+
         getPeersList();
+        new Thread(this).run();
     }
 
     public void serveFile(String name, String addr) {
@@ -162,7 +160,11 @@ public class Peer extends BaseNode implements Runnable {
                     for (int i = 0; i < byteArrayList.size(); i++) {
                         mess[i] = byteArrayList.get(i);
                     }
-                    processMessage(mess, new String(receive), host,sourcePort);
+                    byte[] iden_bytes = new byte[messageMaxLen];
+                    for (int i = 0; i < receive.length - 1; i++) {
+                        iden_bytes[i] = receive[i + 1];
+                    }
+                    processMessage(mess, data(iden_bytes).toString(), host, sourcePort);
                     recievingData.remove(idx);
 
                 }
@@ -176,7 +178,8 @@ public class Peer extends BaseNode implements Runnable {
     }
 
     void processMessage(byte[] mess, String iden, String host_ip, int host_port) {
-        iden = iden.toLowerCase();
+        System.out.println("Peer : " + iden);
+//        iden = iden.toLowerCase();
         String[] ss = iden.split(",");
 
         switch (ss[0]) {
@@ -215,8 +218,11 @@ public class Peer extends BaseNode implements Runnable {
                 }
                 break;
             case PEER_LIST:
+//                System.out.println("hiiiiiiiiiiiiiiii");
                 String list = new String(data(mess).toString().getBytes());
+                System.out.println(list);
                 peerDetails = parsePeerList(list);
+                break;
             default:
                 System.out.println("Unknown Message Identifier");
                 break;
@@ -225,11 +231,13 @@ public class Peer extends BaseNode implements Runnable {
 
     public void getPeersList() {
 //        byte buf[] = "list".getBytes();
-        sendMessage(null, "list", trackerIP, trackerPort);
+        sendMessage(null, PEER_LIST, trackerIP, trackerPort);
+
 
     }
 
     private ArrayList<PeerDetail> parsePeerList(String list) {
+
         String[] ss = list.split(";");
         ArrayList<PeerDetail> peerDetailArrayList = new ArrayList<>();
         for (int i = 0; i < ss.length; i++) {

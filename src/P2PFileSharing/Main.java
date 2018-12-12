@@ -17,8 +17,9 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Peer peer = new Peer("127.0.0.1",5000);
+        Peer peer = new Peer("127.0.0.1",5000,4000);
         peer.getPeersList();
+
 
 
     }

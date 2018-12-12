@@ -8,21 +8,12 @@ import java.util.ArrayList;
 
 public class Tracker extends BaseNode implements Runnable {
 
-    private DatagramSocket datagramSocket;
-    private int port;
+
     private byte[] receive = new byte[messageMaxLen];
 
 
     public Tracker(int port) {
-
-        this.port = port;
-        peerDetails = new ArrayList<>();
-
-        try {
-            datagramSocket = new DatagramSocket(port);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+        super(port);
         new Thread(this).start();
     }
 
@@ -37,21 +28,19 @@ public class Tracker extends BaseNode implements Runnable {
                 // Step 3 : revieve the data in byte buffer.
 
                 datagramSocket.receive(DpReceive);
+//                System.out.println("ghjk");
                 int offset = receive[0];
-                if (offset != 0) {
 
-                    for (int i = 1; i < messageMaxLen; i++) {
-                        byteArrayList.add(receive[i]);
-                    }
-                } else {
-                    byte[] mess = new byte[byteArrayList.size()];
-                    for (int i = 0; i < byteArrayList.size(); i++) {
-                        mess[i] = byteArrayList.get(i);
-                    }
-                    String message = new String(mess);
-                    processMessage(null, message, DpReceive.getAddress().getHostName(), DpReceive.getPort());
-                    byteArrayList = new ArrayList<>();
+                for (int i = 1; i < messageMaxLen; i++) {
+                    byteArrayList.add(receive[i]);
                 }
+                byte[] mess = new byte[byteArrayList.size()];
+                for (int i = 0; i < byteArrayList.size(); i++) {
+                    mess[i] = byteArrayList.get(i);
+                }
+                String message = data(mess).toString();
+                processMessage(null, message, DpReceive.getAddress().getHostName(), DpReceive.getPort());
+                byteArrayList = new ArrayList<>();
 
                 receive = new byte[messageMaxLen];
             }
@@ -62,8 +51,11 @@ public class Tracker extends BaseNode implements Runnable {
 
 
     void processMessage(byte[] mess, String iden, String host_ip, int host_port) {
+        System.out.println(iden);
         String[] ss = iden.split(",");
+
         switch (ss[0]) {
+
 
             case PEER_LIST:
                 PeerDetail peerDetail = new PeerDetail(host_ip, host_port);
@@ -75,7 +67,7 @@ public class Tracker extends BaseNode implements Runnable {
                     res.append(peerDetails.get(i).toString());
                     res.append(";");
                 }
-                sendMessage(res.toString().getBytes(), PEER_LIST + "," , host_ip, host_port);
+                sendMessage(res.toString().getBytes(), PEER_LIST , host_ip, host_port);
 
                 break;
             default:
