@@ -31,7 +31,7 @@ public abstract class BaseNode {
     static final String PEER_LIST = "peer list";
 
     void sendMessage(byte[] bytes, String iden, String dest_ip, int dest_port) {
-        System.out.println("sending message " + iden);
+//        System.out.println("sending message " + iden);
         try {
             if (bytes != null) {
 
@@ -63,7 +63,7 @@ public abstract class BaseNode {
 
     abstract void processMessage(byte[] mess, String iden, String host_ip, int host_port);
 
-    static StringBuilder data(byte[] a) {
+    static StringBuilder textOutofBytes(byte[] a) {
         if (a == null)
             return null;
         StringBuilder ret = new StringBuilder();

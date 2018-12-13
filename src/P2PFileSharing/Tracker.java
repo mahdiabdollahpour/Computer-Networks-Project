@@ -2,8 +2,6 @@ package P2PFileSharing;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Tracker extends BaseNode implements Runnable {
@@ -25,7 +23,7 @@ public class Tracker extends BaseNode implements Runnable {
             while (true) {
                 DpReceive = new DatagramPacket(receive, receive.length);
 
-                // Step 3 : revieve the data in byte buffer.
+                // Step 3 : revieve the textOutofBytes in byte buffer.
 
                 datagramSocket.receive(DpReceive);
 //                System.out.println("ghjk");
@@ -38,7 +36,7 @@ public class Tracker extends BaseNode implements Runnable {
                 for (int i = 0; i < byteArrayList.size(); i++) {
                     mess[i] = byteArrayList.get(i);
                 }
-                String message = data(mess).toString();
+                String message = textOutofBytes(mess).toString();
                 processMessage(null, message, DpReceive.getAddress().getHostName(), DpReceive.getPort());
                 byteArrayList = new ArrayList<>();
 
@@ -51,7 +49,7 @@ public class Tracker extends BaseNode implements Runnable {
 
 
     void processMessage(byte[] mess, String iden, String host_ip, int host_port) {
-        System.out.println(iden);
+//        System.out.println(iden);
         String[] ss = iden.split(",");
 
         switch (ss[0]) {

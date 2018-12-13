@@ -2,16 +2,14 @@ package P2PFileSharing;
 
 import java.io.*;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Peer extends BaseNode implements Runnable {
 
     private ArrayList<File> files;
-    private ArrayList<PeerDetail> peerDetails;
+
     private ArrayList<FileSearch> fileSearches;
 
     private static class RecievingData {
@@ -104,12 +102,14 @@ public class Peer extends BaseNode implements Runnable {
         fileSearches = new ArrayList<>();
         files = new ArrayList<>();
 
-        getPeersList();
-        new Thread(this).run();
+//        getPeersList();
+        new Thread(this).start();
     }
 
     public void serveFile(String name, String addr) {
+//        System.out.println("fghjk");
         files.add(new File(name, addr));
+        System.out.println("File added");
     }
 
     public void requestFile(String name) {
@@ -127,7 +127,7 @@ public class Peer extends BaseNode implements Runnable {
 
                 DatagramPacket DpReceive = new DatagramPacket(receive, receive.length);
 
-                // Step 3 : revieve the data in byte buffer.
+                // Step 3 : revieve the textOutofBytes in byte buffer.
                 ArrayList<Byte> byteArrayList = null;
                 datagramSocket.receive(DpReceive);
                 String host = DpReceive.getAddress().getHostAddress();
@@ -164,7 +164,7 @@ public class Peer extends BaseNode implements Runnable {
                     for (int i = 0; i < receive.length - 1; i++) {
                         iden_bytes[i] = receive[i + 1];
                     }
-                    processMessage(mess, data(iden_bytes).toString(), host, sourcePort);
+                    processMessage(mess, textOutofBytes(iden_bytes).toString(), host, sourcePort);
                     recievingData.remove(idx);
 
                 }
@@ -206,7 +206,8 @@ public class Peer extends BaseNode implements Runnable {
                 }
                 break;
             case FILE_RESPONSE:
-                files.add(new File(ss[1], ss[2], data(mess).toString().getBytes()));
+                System.out.println("There is a Response");
+                files.add(new File(ss[1], ss[2], textOutofBytes(mess).toString().getBytes()));
                 Iterator<FileSearch> iterable = fileSearches.iterator();
                 while (iterable.hasNext()) {
                     FileSearch fileSearch = iterable.next();
@@ -219,7 +220,7 @@ public class Peer extends BaseNode implements Runnable {
                 break;
             case PEER_LIST:
 //                System.out.println("hiiiiiiiiiiiiiiii");
-                String list = new String(data(mess).toString().getBytes());
+                String list = new String(textOutofBytes(mess).toString().getBytes());
                 System.out.println(list);
                 peerDetails = parsePeerList(list);
                 break;
