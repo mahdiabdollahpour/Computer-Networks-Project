@@ -1,6 +1,8 @@
 package DistributedCalculator;
 
 
+import java.util.Scanner;
+
 public class CalcRunProg {
 
     public static void main(String[] args) {
@@ -20,9 +22,15 @@ public class CalcRunProg {
         }
 
         Client client = new Client("127.0.0.1", 5000);
-        client.askCalc("ADD", 32, 56);
-
-
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            String op = in.next();
+            int a = in.nextInt();
+            int b = in.nextInt();
+            client.askCalc(op, a, b);
+        }
+//            client.askCalc("ADD", 10,23);
+//            client.askCalc("ADD", 11,53);
 
     }
 

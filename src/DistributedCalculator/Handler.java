@@ -44,13 +44,13 @@ public class Handler extends Thread {
                     while (flag) {
                         if (dataInputStream.available() >= len) {
                             int len_read = dataInputStream.read(bytes);
-                            System.out.println("len read : " + len_read);
+//                            System.out.println("len read : " + len_read);
                             flag = false;
                         }
                     }
 
                     String mess = new String(bytes).toLowerCase();
-                    System.out.println("handler :" + mess);
+//                    System.out.println("handler :" + mess);
                     compute(mess);
                 }
             }
@@ -113,7 +113,7 @@ public class Handler extends Thread {
             default:
                 break;
         }
-        System.out.println("answer computed :" + res + " , " + time);
+//        System.out.println("answer computed :" + res + " , " + time);
         send_result(res, time);
     }
 

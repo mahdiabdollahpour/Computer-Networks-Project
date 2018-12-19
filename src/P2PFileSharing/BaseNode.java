@@ -1,10 +1,7 @@
 package P2PFileSharing;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.ArrayList;
 
 public abstract class BaseNode {
@@ -12,6 +9,10 @@ public abstract class BaseNode {
     int messageMaxLen = 128;
     ArrayList<PeerDetail> peerDetails;
     int port;
+//    protected static final int SEND_PORT = 5000;
+//    protected static final int RECEIVE_PORT = 4000;
+    protected MulticastSocket multicastSocket;
+    protected static final int MULTICAST_PORT = 4446;
 
     public BaseNode(int port) {
         this.port = port;
@@ -19,12 +20,17 @@ public abstract class BaseNode {
         try {
             System.out.println("Creating socket");
             datagramSocket = new DatagramSocket(port);
+            multicastSocket = new MulticastSocket(MULTICAST_PORT);
         } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    static final String FILE_FOUND = "file found";
+    static final String FILE_DEMAND = "file demand";
     static final String FILE_NOT_FOUND = "file not found";
     static final String FILE_REQUEST = "file request";
     static final String FILE_RESPONSE = "file response";

@@ -3,14 +3,18 @@ package P2PFileSharing;
 import java.io.*;
 import java.net.DatagramPacket;
 
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Peer extends BaseNode implements Runnable {
-
+    private Thread broadcastThread;
     private ArrayList<File> files;
 
     private ArrayList<FileSearch> fileSearches;
+    private String name;
 
     private static class RecievingData {
         ArrayList<Byte> byteArrayList = new ArrayList<>();
@@ -80,42 +84,79 @@ public class Peer extends BaseNode implements Runnable {
             this.fileName = fileName;
         }
     }
-
-    private void askNextForFile(FileSearch fileSearch) {
-        fileSearch.idx++;
-        if (fileSearch.idx >= peerDetails.size()) {
-            System.out.println("No one has " + fileSearch.fileName);
-            return;
-        }
-        PeerDetail peerDetail = peerDetails.get(fileSearch.idx);
-        sendMessage(null, FILE_REQUEST + "," + fileSearch.fileName, peerDetail.getIp(), peerDetail.getPort());
-    }
+//
+//    private void askNextForFile(FileSearch fileSearch) {
+//        fileSearch.idx++;
+//        if (fileSearch.idx >= peerDetails.size()) {
+//            System.out.println("No one has " + fileSearch.fileName);
+//            return;
+//        }
+//        PeerDetail peerDetail = peerDetails.get(fileSearch.idx);
+//        sendMessage(null, FILE_REQUEST + "," + fileSearch.fileName, peerDetail.getIp(), peerDetail.getPort());
+//    }
 
 
     private String trackerIP;
     private int trackerPort;
 
-    public Peer(String trackerIP, int trackerPort, int peerPort) {
+    public Peer(String name, String trackerIP, int trackerPort, int peerPort) {
         super(peerPort);
+        this.name = name;
         this.trackerIP = trackerIP;
         this.trackerPort = trackerPort;
         fileSearches = new ArrayList<>();
         files = new ArrayList<>();
+        broadcastThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    byte[] buf = new byte[messageMaxLen];
+                    InetAddress group = null;
+                    group = InetAddress.getByName("230.0.0.0");
+                    multicastSocket.joinGroup(group);
+                    while (true) {
+                        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                        multicastSocket.receive(packet);
+                        processMessage(null, textOutofBytes(buf).toString(), packet.getAddress().getHostName(), packet.getPort());
+
+                    }
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        broadcastThread.start();
 
 //        getPeersList();
         new Thread(this).start();
     }
 
-    public void serveFile(String name, String addr) {
+    public void serveFile(String fname, String addr) {
 //        System.out.println("fghjk");
-        files.add(new File(name, addr));
-        System.out.println("File added");
+        files.add(new File(fname, addr));
+        System.out.println(name + " : File added");
     }
 
-    public void requestFile(String name) {
-        FileSearch fileSearch = new FileSearch(name);
+    public void requestFile(String fname) {
+        FileSearch fileSearch = new FileSearch(fname);
+
+
         fileSearches.add(fileSearch);
-        askNextForFile(fileSearch);
+        lookingForAFile = fname;
+        byte[] data = (FILE_REQUEST + "," + fileSearch.fileName).getBytes();
+        try {
+            DatagramPacket datagramPacket = new DatagramPacket(data, data.length, InetAddress.getByName("230.0.0.0"), MULTICAST_PORT);
+            datagramSocket.send(datagramPacket);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(name + " : request message sent");
+//        sendMessage(null, , "230.0.0.0", MULTICAST_PORT);
+
     }
 
     public void run() {
@@ -127,7 +168,7 @@ public class Peer extends BaseNode implements Runnable {
 
                 DatagramPacket DpReceive = new DatagramPacket(receive, receive.length);
 
-                // Step 3 : revieve the textOutofBytes in byte buffer.
+
                 ArrayList<Byte> byteArrayList = null;
                 datagramSocket.receive(DpReceive);
                 String host = DpReceive.getAddress().getHostAddress();
@@ -177,36 +218,60 @@ public class Peer extends BaseNode implements Runnable {
 
     }
 
+    String lookingForAFile = null;
+
     void processMessage(byte[] mess, String iden, String host_ip, int host_port) {
-        System.out.println("Peer : " + iden);
+        System.out.println(name + " : " + iden);
 //        iden = iden.toLowerCase();
         String[] ss = iden.split(",");
+//        System.out.println("IDEN " + ss[0]);
 
         switch (ss[0]) {
-            case FILE_REQUEST:
+            case FILE_FOUND:
+                if (lookingForAFile != null) {
+                    sendMessage(null, FILE_DEMAND + "," + lookingForAFile, host_ip, host_port);
+                    lookingForAFile = null;
+                }
+                break;
+            case FILE_DEMAND:
                 String fileName = ss[1];
-                boolean found = false;
+
                 for (int i = 0; i < files.size(); i++) {
                     File f = files.get(i);
                     if (f.name.equals(fileName)) {
                         sendMessage(f.getFile(), FILE_RESPONSE + "," + f.name + "," + f.addr, host_ip, host_port);
+                        break;
                     }
-                    found = true;
-                    break;
+                }
+                break;
+            case FILE_REQUEST:
+                fileName = ss[1];
+                System.out.println(name + " : received request file name : " + fileName);
+                boolean found = false;
+                for (int i = 0; i < files.size(); i++) {
+                    File f = files.get(i);
+                    if (f.name.equals(fileName)) {
+//                        System.out.println(f.name + " =?=" + fileName);
+                        System.out.println(name + " : sending found");
+                        sendMessage(null, FILE_FOUND, host_ip, host_port);
+                        found = true;
+                        break;
+                    }
                 }
                 if (!found) {
                     sendMessage(null, FILE_NOT_FOUND + "," + fileName, host_ip, host_port);
                 }
                 break;
             case FILE_NOT_FOUND:
-                for (int i = 0; i < fileSearches.size(); i++) {
-                    if (fileSearches.get(i).fileName.equals(ss[1])) {
-                        askNextForFile(fileSearches.get(i));
-                    }
-                }
+//                System.out.println("File not found form a peer");
+//                for (int i = 0; i < fileSearches.size(); i++) {
+//                    if (fileSearches.get(i).fileName.equals(ss[1])) {
+//                        askNextForFile(fileSearches.get(i));
+//                    }
+//                }
                 break;
             case FILE_RESPONSE:
-                System.out.println("There is a Response");
+                System.out.println(name + " : There is a Response :" + iden);
                 files.add(new File(ss[1], ss[2], textOutofBytes(mess).toString().getBytes()));
                 Iterator<FileSearch> iterable = fileSearches.iterator();
                 while (iterable.hasNext()) {
@@ -225,7 +290,7 @@ public class Peer extends BaseNode implements Runnable {
                 peerDetails = parsePeerList(list);
                 break;
             default:
-                System.out.println("Unknown Message Identifier");
+                System.out.println(name + "Unknown Message Identifier");
                 break;
         }
     }

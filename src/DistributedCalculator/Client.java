@@ -38,11 +38,11 @@ public class Client {
 
             String message = op + "," + Double.toString(op1) + "," + Double.toString(op2);
             int lenn = message.getBytes().length;
-            System.out.println("client message len:" + lenn);
-            System.out.println("client req :" + message);
+//            System.out.println("client message len:" + lenn);
+//            System.out.println("client req :" + message);
             dataOutputStream.writeInt(lenn);
             dataOutputStream.writeBytes(message);
-            while (dataInputStream.available() <= 0) {
+//            while (dataInputStream.available() <= 0) {
                 int len = dataInputStream.readInt();
                 byte[] bytes = new byte[len];
                 boolean flag = true;
@@ -54,8 +54,8 @@ public class Client {
                 }
 
                 String result = new String(bytes);
-                System.out.println(result);
-            }
+                System.out.println("RESULT : "+result);
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }
