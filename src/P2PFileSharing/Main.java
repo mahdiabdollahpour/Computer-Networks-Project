@@ -1,31 +1,28 @@
 package P2PFileSharing;
 
+import java.util.Scanner;
+
 public class Main {
 
 
     public static void main(String[] args) {
-        try {
-            Thread t = new Thread(() -> {
-                Tracker tracker = new Tracker(5000);
-//                tracker.start();
-            });
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        Peer peer = new Peer("P1",n );
 
-            t.start();
-            Thread.sleep(3000);
-            Peer peer = new Peer("P1", "127.0.0.1", 5000, 4000);
-            peer.getPeersList();
-//        System.out.println("aaaaaaaaaaaa");
-            peer.serveFile("data2.txt", "data2.txt");
-            peer.serveFile("data.txt", "data.txt");
-
-            Peer peer2 = new Peer("P2", "127.0.0.1", 5000, 3000);
-            peer2.getPeersList();
-            Thread.sleep(3000);
-            peer2.requestFile("data.txt");
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+            String command = in.nextLine();
+            if(command.length() <= 1){
+                continue;
+            }
+            String[] ss = command.split(" ");
+            if (ss[1].equals("-receive")) {
+                peer.requestFile(ss[3]);
+            } else if (ss[1].equals("-serve")) {
+                peer.serveFile(ss[3], ss[5]);
+            }
         }
+
 
     }
 }

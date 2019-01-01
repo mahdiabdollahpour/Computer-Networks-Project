@@ -1,15 +1,12 @@
 package P2PFileSharing;
 
 import java.io.*;
-import java.net.DatagramPacket;
+import java.net.*;
 
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Peer extends BaseNode implements Runnable {
+public class Peer implements Runnable {
     private Thread broadcastThread;
     private ArrayList<File> files;
 
@@ -35,7 +32,7 @@ public class Peer extends BaseNode implements Runnable {
         public File(String name, String addr) {
             this.name = name;
             this.addr = addr;
-            //TODO:check if file really exists
+
         }
 
         public File(String name, String addr, byte[] bytes) {
@@ -84,52 +81,59 @@ public class Peer extends BaseNode implements Runnable {
             this.fileName = fileName;
         }
     }
-//
-//    private void askNextForFile(FileSearch fileSearch) {
-//        fileSearch.idx++;
-//        if (fileSearch.idx >= peerDetails.size()) {
-//            System.out.println("No one has " + fileSearch.fileName);
-//            return;
-//        }
-//        PeerDetail peerDetail = peerDetails.get(fileSearch.idx);
-//        sendMessage(null, FILE_REQUEST + "," + fileSearch.fileName, peerDetail.getIp(), peerDetail.getPort());
-//    }
+
+    private DatagramSocket datagramSocket;
+    private int messageMaxLen = 128;
+    private int port;
+
+    private MulticastSocket multicastSocket;
+    private static final int MULTICAST_PORT = 4446;
+    private String lookingForAFile = null;
+
+    static final String FILE_FOUND = "file found";
+    static final String FILE_REQUEST = "file demand";
+
+    static final String FILE_LOOKUP = "file request";
+    static final String FILE_RESPONSE = "file response";
 
 
-    private String trackerIP;
-    private int trackerPort;
+    public Peer(String name, int peerPort) {
 
-    public Peer(String name, String trackerIP, int trackerPort, int peerPort) {
-        super(peerPort);
+        this.port = peerPort;
+        try {
+            System.out.println("Creating socket");
+            datagramSocket = new DatagramSocket(port);
+            multicastSocket = new MulticastSocket(MULTICAST_PORT);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.name = name;
-        this.trackerIP = trackerIP;
-        this.trackerPort = trackerPort;
+
         fileSearches = new ArrayList<>();
         files = new ArrayList<>();
-        broadcastThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    byte[] buf = new byte[messageMaxLen];
-                    InetAddress group = null;
-                    group = InetAddress.getByName("230.0.0.0");
-                    multicastSocket.joinGroup(group);
-                    while (true) {
-                        DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                        multicastSocket.receive(packet);
-                        processMessage(null, textOutofBytes(buf).toString(), packet.getAddress().getHostName(), packet.getPort());
+        broadcastThread = new Thread(() -> {
+            try {
+                byte[] buf = new byte[messageMaxLen];
+                InetAddress group = null;
+                group = InetAddress.getByName("230.0.0.0");
+                multicastSocket.joinGroup(group);
+                while (true) {
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    multicastSocket.receive(packet);
+                    processMessage(null, textOutofBytes(buf).toString(), packet.getAddress().getHostName(), packet.getPort());
 
-                    }
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         broadcastThread.start();
 
-//        getPeersList();
+
         new Thread(this).start();
     }
 
@@ -145,7 +149,7 @@ public class Peer extends BaseNode implements Runnable {
 
         fileSearches.add(fileSearch);
         lookingForAFile = fname;
-        byte[] data = (FILE_REQUEST + "," + fileSearch.fileName).getBytes();
+        byte[] data = (FILE_LOOKUP + "," + fileSearch.fileName).getBytes();
         try {
             DatagramPacket datagramPacket = new DatagramPacket(data, data.length, InetAddress.getByName("230.0.0.0"), MULTICAST_PORT);
             datagramSocket.send(datagramPacket);
@@ -218,22 +222,21 @@ public class Peer extends BaseNode implements Runnable {
 
     }
 
-    String lookingForAFile = null;
 
     void processMessage(byte[] mess, String iden, String host_ip, int host_port) {
         System.out.println(name + " : " + iden);
-//        iden = iden.toLowerCase();
         String[] ss = iden.split(",");
-//        System.out.println("IDEN " + ss[0]);
-
+        if (host_port == datagramSocket.getPort()) {
+            return;
+        }
         switch (ss[0]) {
             case FILE_FOUND:
                 if (lookingForAFile != null) {
-                    sendMessage(null, FILE_DEMAND + "," + lookingForAFile, host_ip, host_port);
+                    sendMessage(null, FILE_REQUEST + "," + lookingForAFile, host_ip, host_port);
                     lookingForAFile = null;
                 }
                 break;
-            case FILE_DEMAND:
+            case FILE_REQUEST:
                 String fileName = ss[1];
 
                 for (int i = 0; i < files.size(); i++) {
@@ -244,32 +247,21 @@ public class Peer extends BaseNode implements Runnable {
                     }
                 }
                 break;
-            case FILE_REQUEST:
+            case FILE_LOOKUP:
                 fileName = ss[1];
                 System.out.println(name + " : received request file name : " + fileName);
                 boolean found = false;
                 for (int i = 0; i < files.size(); i++) {
                     File f = files.get(i);
                     if (f.name.equals(fileName)) {
-//                        System.out.println(f.name + " =?=" + fileName);
                         System.out.println(name + " : sending found");
                         sendMessage(null, FILE_FOUND, host_ip, host_port);
-                        found = true;
                         break;
                     }
                 }
-                if (!found) {
-                    sendMessage(null, FILE_NOT_FOUND + "," + fileName, host_ip, host_port);
-                }
+
                 break;
-            case FILE_NOT_FOUND:
-//                System.out.println("File not found form a peer");
-//                for (int i = 0; i < fileSearches.size(); i++) {
-//                    if (fileSearches.get(i).fileName.equals(ss[1])) {
-//                        askNextForFile(fileSearches.get(i));
-//                    }
-//                }
-                break;
+
             case FILE_RESPONSE:
                 System.out.println(name + " : There is a Response :" + iden);
                 files.add(new File(ss[1], ss[2], textOutofBytes(mess).toString().getBytes()));
@@ -283,35 +275,55 @@ public class Peer extends BaseNode implements Runnable {
 
                 }
                 break;
-            case PEER_LIST:
-//                System.out.println("hiiiiiiiiiiiiiiii");
-                String list = new String(textOutofBytes(mess).toString().getBytes());
-                System.out.println(list);
-                peerDetails = parsePeerList(list);
-                break;
+
             default:
                 System.out.println(name + "Unknown Message Identifier");
                 break;
         }
     }
 
-    public void getPeersList() {
-//        byte buf[] = "list".getBytes();
-        sendMessage(null, PEER_LIST, trackerIP, trackerPort);
 
+    void sendMessage(byte[] bytes, String iden, String dest_ip, int dest_port) {
+        try {
+            if (bytes != null) {
 
+                int parts_num = (int) Math.ceil(bytes.length * 1.0 / (messageMaxLen - 1));
+//                System.out.println(parts_num + "," + bytes.length);
+                for (int i = 0; i < parts_num; i++) {
+                    byte[] chunk = new byte[messageMaxLen];
+                    chunk[0] = (byte) (parts_num - i);
+                    for (int i1 = 1; i1 < chunk.length && parts_num * i + (i1 - 1) < bytes.length; i1++) {
+                        chunk[i1] =
+                                bytes[parts_num * i + (i1 - 1)];
+                    }
+                    DatagramPacket datagramPacket = new DatagramPacket(chunk, chunk.length, InetAddress.getByName(dest_ip), dest_port);
+                    datagramSocket.send(datagramPacket);
+                }
+            }
+            byte[] iden_bytes = iden.getBytes();
+            byte[] mess_bytes = new byte[messageMaxLen];
+            mess_bytes[0] = 0;
+            for (int i = 1; i <= iden_bytes.length; i++) {
+                mess_bytes[i] = iden_bytes[i - 1];
+            }
+            DatagramPacket datagramPacket = new DatagramPacket(mess_bytes, mess_bytes.length, InetAddress.getByName(dest_ip), dest_port);
+            datagramSocket.send(datagramPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private ArrayList<PeerDetail> parsePeerList(String list) {
 
-        String[] ss = list.split(";");
-        ArrayList<PeerDetail> peerDetailArrayList = new ArrayList<>();
-        for (int i = 0; i < ss.length; i++) {
-            String[] sss = ss[i].split(",");
-            peerDetailArrayList.add(new PeerDetail(sss[0], Integer.parseInt(sss[1])));
+    static StringBuilder textOutofBytes(byte[] a) {
+        if (a == null)
+            return null;
+        StringBuilder ret = new StringBuilder();
+        int i = 0;
+        while (a[i] != 0) {
+            ret.append((char) a[i]);
+            i++;
         }
-        return peerDetailArrayList;
-
+        return ret;
     }
 
 }

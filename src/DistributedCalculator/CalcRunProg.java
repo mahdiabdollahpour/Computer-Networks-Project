@@ -6,12 +6,7 @@ import java.util.Scanner;
 public class CalcRunProg {
 
     public static void main(String[] args) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Server server = new Server(5000);
-//                server.waitForConnection();
-            }
+        Thread t = new Thread(() -> { new Server(5000);
         });
         t.start();
 
@@ -24,13 +19,16 @@ public class CalcRunProg {
         Client client = new Client("127.0.0.1", 5000);
         Scanner in = new Scanner(System.in);
         while (true) {
-            String op = in.next();
+            String op = in.next().toLowerCase();
             int a = in.nextInt();
-            int b = in.nextInt();
+            int b = 0;
+            if (!(op.equals("sin") || op.equals("cos") || op.equals("tan") || op.equals("cot"))) {
+                b = in.nextInt();
+
+            }
             client.askCalc(op, a, b);
         }
-//            client.askCalc("ADD", 10,23);
-//            client.askCalc("ADD", 11,53);
+
 
     }
 
