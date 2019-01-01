@@ -1,8 +1,10 @@
-package P2PFileSharing;
+package Part2Codes;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -83,18 +85,17 @@ public class Peer implements Runnable {
     }
 
     private DatagramSocket datagramSocket;
-    private int messageMaxLen = 128;
+    private int messageMaxLen = 14000;
     private int port;
 
     private MulticastSocket multicastSocket;
     private static final int MULTICAST_PORT = 4446;
     private String lookingForAFile = null;
 
-    static final String FILE_FOUND = "file found";
-    static final String FILE_REQUEST = "file demand";
-
-    static final String FILE_LOOKUP = "file request";
-    static final String FILE_RESPONSE = "file response";
+    static final char FILE_FOUND = 'a';
+    static final char FILE_REQUEST = 'b';
+    static final char FILE_LOOKUP = 'c';
+    static final char FILE_RESPONSE = 'd';
 
 
     public Peer(String name, int peerPort) {
@@ -168,6 +169,7 @@ public class Peer implements Runnable {
         ArrayList<RecievingData> recievingData = new ArrayList<>();
 //        ArrayList<Byte> byteArrayList = new ArrayList<>();
         try {
+
             while (true) {
 
                 DatagramPacket DpReceive = new DatagramPacket(receive, receive.length);
@@ -175,7 +177,7 @@ public class Peer implements Runnable {
 
                 ArrayList<Byte> byteArrayList = null;
                 datagramSocket.receive(DpReceive);
-                String host = DpReceive.getAddress().getHostAddress();
+                String host = DpReceive.getAddress().getHostName();
                 int sourcePort = DpReceive.getPort();
                 boolean found = false;
                 int idx = 0;
@@ -189,26 +191,33 @@ public class Peer implements Runnable {
                     }
                 }
                 if (!found) {
-                    byteArrayList = new ArrayList<>();
-                    recievingData.add(new RecievingData(byteArrayList, host, sourcePort));
+                    recievingData.add(new RecievingData(new ArrayList<>(), host, sourcePort));
                     idx = recievingData.size() - 1;
+                    byteArrayList = recievingData.get(idx).byteArrayList;
                 }
+                byte[] offarr = new byte[4];
+                for (int i = 0; i < 4; i++) {
+                    offarr[i] = receive[i];
+                }
+                int offset = new BigInteger(offarr).intValue();
+                System.out.println("offset : " + offset);
 
-                int offset = receive[0];
                 if (offset != 0) {
 
                     for (int i = 1; i < messageMaxLen; i++) {
                         byteArrayList.add(receive[i]);
                     }
-                } else {
+
+                } else {   //offset  = 0
                     byte[] mess = new byte[byteArrayList.size()];
                     for (int i = 0; i < byteArrayList.size(); i++) {
                         mess[i] = byteArrayList.get(i);
                     }
-                    byte[] iden_bytes = new byte[messageMaxLen];
-                    for (int i = 0; i < receive.length - 1; i++) {
-                        iden_bytes[i] = receive[i + 1];
+                    byte[] iden_bytes = new byte[receive.length - 4];
+                    for (int i = 4; i < receive.length; i++) {
+                        iden_bytes[i - 4] = receive[i];
                     }
+                    System.out.println("iden :" + textOutofBytes(iden_bytes));
                     processMessage(mess, textOutofBytes(iden_bytes).toString(), host, sourcePort);
                     recievingData.remove(idx);
 
@@ -229,7 +238,7 @@ public class Peer implements Runnable {
         if (host_port == datagramSocket.getPort()) {
             return;
         }
-        switch (ss[0]) {
+        switch (ss[0].charAt(0)) {
             case FILE_FOUND:
                 if (lookingForAFile != null) {
                     sendMessage(null, FILE_REQUEST + "," + lookingForAFile, host_ip, host_port);
@@ -255,7 +264,7 @@ public class Peer implements Runnable {
                     File f = files.get(i);
                     if (f.name.equals(fileName)) {
                         System.out.println(name + " : sending found");
-                        sendMessage(null, FILE_FOUND, host_ip, host_port);
+                        sendMessage(null, FILE_FOUND + "", host_ip, host_port);
                         break;
                     }
                 }
@@ -286,28 +295,54 @@ public class Peer implements Runnable {
     void sendMessage(byte[] bytes, String iden, String dest_ip, int dest_port) {
         try {
             if (bytes != null) {
-
-                int parts_num = (int) Math.ceil(bytes.length * 1.0 / (messageMaxLen - 1));
+                System.out.println("to send : " + bytes.length);
+                int parts_num = (int) Math.ceil((double)( bytes.length * 1.0) / (double)(messageMaxLen - 8));
+                System.out.println(parts_num);
 //                System.out.println(parts_num + "," + bytes.length);
+                int sent = 0;
                 for (int i = 0; i < parts_num; i++) {
-                    byte[] chunk = new byte[messageMaxLen];
-                    chunk[0] = (byte) (parts_num - i);
-                    for (int i1 = 1; i1 < chunk.length && parts_num * i + (i1 - 1) < bytes.length; i1++) {
-                        chunk[i1] =
-                                bytes[parts_num * i + (i1 - 1)];
+                    byte[] partbyte = ByteBuffer.allocate(4).putInt(parts_num - i).array();
+                    byte[] chunk = new byte[Math.min(messageMaxLen, bytes.length - sent)];
+                    byte[] lenbyte = ByteBuffer.allocate(4).putInt(chunk.length).array();
+                    for (int j = 0; j < 4; j++) {
+                        chunk[j] = partbyte[j];
                     }
+                    System.out.println("chunk size :" + chunk.length);
+//                    System.out.println("lenByte size :" + lenbyte.length);
+                    for (int j = 4; j < 8; j++) {
+
+                        chunk[j] =
+                                lenbyte[j - 4];
+                    }
+                    //&& messageMaxLen * i + (i1 - 1) < bytes.length
+                    for (int i1 = 8; i1 < chunk.length; i1++) {
+                        chunk[i1] =
+                                bytes[sent + (i1 - 8)];
+                    }
+                    sent += chunk.length - 8;
                     DatagramPacket datagramPacket = new DatagramPacket(chunk, chunk.length, InetAddress.getByName(dest_ip), dest_port);
                     datagramSocket.send(datagramPacket);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                System.out.println("sent amount : " + sent);
             }
             byte[] iden_bytes = iden.getBytes();
-            byte[] mess_bytes = new byte[messageMaxLen];
-            mess_bytes[0] = 0;
-            for (int i = 1; i <= iden_bytes.length; i++) {
-                mess_bytes[i] = iden_bytes[i - 1];
+            byte[] mess_bytes = new byte[4 + iden_bytes.length];
+            byte[] partbyte = ByteBuffer.allocate(4).putInt(0).array();
+            for (int j = 0; j < 4; j++) {
+                mess_bytes[j] = partbyte[j];
+            }
+
+            for (int i = 4; i < mess_bytes.length; i++) {
+                mess_bytes[i] = iden_bytes[i - 4];
             }
             DatagramPacket datagramPacket = new DatagramPacket(mess_bytes, mess_bytes.length, InetAddress.getByName(dest_ip), dest_port);
             datagramSocket.send(datagramPacket);
+            System.out.println("last part sent");
         } catch (IOException e) {
             e.printStackTrace();
         }

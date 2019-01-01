@@ -1,9 +1,9 @@
-package DistributedCalculator;
+package Part1Codes;
 
 
 import java.util.Scanner;
 
-public class CalcRunProg {
+public class Part1 {
 
     public static void main(String[] args) {
         Thread t = new Thread(() -> {
@@ -18,7 +18,7 @@ public class CalcRunProg {
         }
 
         Client client = new Client("127.0.0.1", 5000);
-        
+
         Scanner in = new Scanner(System.in);
         while (true) {
             String op = in.next().toLowerCase();

@@ -1,4 +1,4 @@
-package DistributedCalculator;
+package Part1Codes;
 
 import java.io.IOException;
 import java.net.ServerSocket;
