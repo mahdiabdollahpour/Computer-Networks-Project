@@ -14,47 +14,39 @@ public class Client {
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
 
-    public Client(String IP, int port) {
+    public Client(String IP, int serverPort) {
         this.socket = new Socket();
         this.IP = IP;
-        this.port = port;
+        this.port = serverPort;
         try {
-//            System.out.println("connecting");
-            socket.connect(new InetSocketAddress(IP, port), 5000);
-//            System.out.println("connected");
+            socket.connect(new InetSocketAddress(IP, serverPort), 5000);
             this.dataInputStream = new DataInputStream(socket.getInputStream());
 
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println("client created");
+
     }
 
-    public void askCalc(String op, double op1, double op2) {
-//        System.out.println("wanna send");
+    public void operateVariables(String op, double op1, double op2) {
         try {
-//            System.out.println("sending");
-
             String message = op + "," + Double.toString(op1) + "," + Double.toString(op2);
             int lenn = message.getBytes().length;
-//            System.out.println("client message len:" + lenn);
-//            System.out.println("client req :" + message);
             dataOutputStream.writeInt(lenn);
             dataOutputStream.writeBytes(message);
-//            while (dataInputStream.available() <= 0) {
-                int len = dataInputStream.readInt();
-                byte[] bytes = new byte[len];
-                boolean flag = true;
-                while (flag) {
-                    if (dataInputStream.available() >= len) {
-                        dataInputStream.read(bytes);
-                        flag = false;
-                    }
+            int len = dataInputStream.readInt();
+            byte[] bytes = new byte[len];
+            boolean flag = true;
+            while (flag) {
+                if (dataInputStream.available() >= len) {
+                    dataInputStream.read(bytes);
+                    flag = false;
                 }
+            }
 
-                String result = new String(bytes);
-                System.out.println("RESULT : "+result);
+            String result = new String(bytes);
+            System.out.println("RESULT : " + result);
 //            }
         } catch (IOException e) {
             e.printStackTrace();

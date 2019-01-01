@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="3931f1d1-c948-438a-a21f-db5dc8a62de8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Handler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Handler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Computer_Networks_Project/DistributedCalculator/Server.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/P2PFileSharing/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/P2PFileSharing/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DistributedCalculator/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DistributedCalculator/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DistributedCalculator/Handler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DistributedCalculator/RequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DistributedCalculator/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DistributedCalculator/Server.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,14 +56,14 @@
         <counts>
           <entry key="dummy" value="28" />
           <entry key="gitignore" value="5" />
-          <entry key="java" value="9608" />
-          <entry key="txt" value="246" />
+          <entry key="java" value="9766" />
+          <entry key="txt" value="261" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="9608" />
-          <entry key="PLAIN_TEXT" value="279" />
+          <entry key="JAVA" value="9766" />
+          <entry key="PLAIN_TEXT" value="294" />
         </counts>
       </usages-collector>
     </session>
@@ -102,8 +104,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+            <state relative-caret-position="255">
+              <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -111,8 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="40" column="54" selection-start-line="40" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
+            <state relative-caret-position="69">
+              <caret line="56" column="33" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -123,8 +125,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+            <state relative-caret-position="221">
+              <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -133,10 +135,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Handler.java">
+        <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/RequestHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="47" column="41" selection-start-line="47" selection-start-column="41" selection-end-line="47" selection-end-column="41" />
+            <state relative-caret-position="35">
+              <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -161,7 +163,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/DistributedCalculator/Server.java" />
         <option value="$PROJECT_DIR$/src/DistributedCalculator/Main.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Server.java" />
         <option value="$PROJECT_DIR$/src/Lab.java" />
@@ -170,13 +171,15 @@
         <option value="$PROJECT_DIR$/data.txt" />
         <option value="$PROJECT_DIR$/data2.txt" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" />
-        <option value="$PROJECT_DIR$/src/DistributedCalculator/Client.java" />
-        <option value="$PROJECT_DIR$/src/DistributedCalculator/Handler.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" />
-        <option value="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Main.java" />
         <option value="$PROJECT_DIR$/src/P2PFileSharing/Peer.java" />
+        <option value="$PROJECT_DIR$/src/DistributedCalculator/Client.java" />
+        <option value="$PROJECT_DIR$/src/DistributedCalculator/Server.java" />
+        <option value="$PROJECT_DIR$/src/DistributedCalculator/Handler.java" />
+        <option value="$PROJECT_DIR$/src/DistributedCalculator/RequestHandler.java" />
+        <option value="$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java" />
       </list>
     </option>
   </component>
@@ -227,7 +230,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546327416696" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546328344633" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -248,7 +251,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.CalcRunProg">
     <configuration name="CalcRunProg" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DistributedCalculator.CalcRunProg" />
       <module name="Computer_Networks_Project" />
@@ -283,8 +286,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.CalcRunProg" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Lab" />
       </list>
     </recent_temporary>
@@ -317,7 +320,7 @@
       <workItem from="1545722370030" duration="397000" />
       <workItem from="1545734866905" duration="59000" />
       <workItem from="1545817955043" duration="113000" />
-      <workItem from="1546320918549" duration="3467000" />
+      <workItem from="1546320918549" duration="4348000" />
     </task>
     <task id="LOCAL-00001" summary="improvment on P2P">
       <created>1544438568423</created>
@@ -361,11 +364,18 @@
       <option name="project" value="LOCAL" />
       <updated>1545228442941</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="done">
+      <created>1546327528296</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1546327528296</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50778000" />
+    <option name="totallyTimeSpent" value="51659000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -380,7 +390,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17327935" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17327935" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -389,7 +399,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3291815" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.0" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.24733096" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3985765" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -452,7 +462,8 @@
     <MESSAGE value="a peer can get list from tracker, tested &amp; OK" />
     <MESSAGE value="getting a file from Network, tested &amp; OK" />
     <MESSAGE value="teste part 1&#10;part 2 coded almost ok(braodcast is ok)" />
-    <option name="LAST_COMMIT_MESSAGE" value="teste part 1&#10;part 2 coded almost ok(braodcast is ok)" />
+    <MESSAGE value="done" />
+    <option name="LAST_COMMIT_MESSAGE" value="done" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_121/src.zip!/java/net/SocketInputStream.java">
@@ -558,36 +569,6 @@
     <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/PeerDetail.java" />
     <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Tracker.java" />
     <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/BaseNode.java" />
-    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="40" column="54" selection-start-line="40" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Handler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="47" column="41" selection-start-line="47" selection-start-column="41" selection-end-line="47" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/P2PFileSharing/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -615,10 +596,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/RequestHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="35">
+          <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="56" column="33" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DistributedCalculator/CalcRunProg.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+        <state relative-caret-position="255">
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
         </state>
       </provider>
     </entry>

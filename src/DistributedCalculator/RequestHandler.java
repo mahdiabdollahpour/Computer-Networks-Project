@@ -3,27 +3,19 @@ package DistributedCalculator;
 import java.io.*;
 import java.net.Socket;
 
-public class Handler extends Thread {
+public class RequestHandler extends Thread {
     private Socket socket;
-    //    private OutputStream outputStream;
-//    private InputStream inputStream;
+
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
 
-    public Handler(Socket socket) {
-//        super("Handler Thread");
-        System.out.println("Handler creating");
-        try {
-            System.out.println("Streams stablishing");
-            this.socket = socket;
-//            this.outputStream = socket.getOutputStream();
-//            this.inputStream = socket.getInputStream();
-            InputStream inputStream = socket.getInputStream();
+    public RequestHandler(Socket socket) {
 
+        try {
+            this.socket = socket;
+            InputStream inputStream = socket.getInputStream();
             this.dataInputStream = new DataInputStream(inputStream);
-//            System.out.println("jflkjdfkl");
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
-//            System.out.println("stream stabloished");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,27 +23,23 @@ public class Handler extends Thread {
     }
 
     public void run() {
-//        System.out.println("handler started");
         try {
             while (true) {
                 if (dataInputStream.available() > 0) {
-//                    int len = inputStream.read();
-//                    System.out.println("Len : " + len);
+
                     int len = dataInputStream.readInt();
-                    System.out.println("handler recieved message with len: " + len);
+
                     byte[] bytes = new byte[len];
                     boolean flag = true;
                     while (flag) {
                         if (dataInputStream.available() >= len) {
                             int len_read = dataInputStream.read(bytes);
-//                            System.out.println("len read : " + len_read);
                             flag = false;
                         }
                     }
 
                     String mess = new String(bytes).toLowerCase();
-//                    System.out.println("handler :" + mess);
-                    compute(mess);
+                    parseRequest(mess);
                 }
             }
         } catch (IOException e) {
@@ -59,7 +47,7 @@ public class Handler extends Thread {
         }
     }
 
-    private void compute(String s) {
+    private void parseRequest(String s) {
         String[] ss = s.split(",");
         double op1 = Double.parseDouble(ss[1]);
         double op2 = 0;
@@ -113,7 +101,7 @@ public class Handler extends Thread {
             default:
                 break;
         }
-//        System.out.println("answer computed :" + res + " , " + time);
+
         send_result(res, time);
     }
 
@@ -122,6 +110,14 @@ public class Handler extends Thread {
         try {
             dataOutputStream.writeInt(message.length());
             dataOutputStream.writeBytes(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

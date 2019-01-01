@@ -18,15 +18,24 @@ public class Server {
 
     public void waitForConnection() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 System.out.println("server is listening");
                 Socket socket = serverSocket.accept();
                 System.out.println("Got a Connection");
 
-                Handler handler = new Handler(socket);
+                RequestHandler handler = new RequestHandler(socket);
 
 
             }
+            closeConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void closeConnection(){
+
+        try {
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
