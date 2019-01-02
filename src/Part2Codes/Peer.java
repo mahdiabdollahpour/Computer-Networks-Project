@@ -196,15 +196,21 @@ public class Peer implements Runnable {
                     byteArrayList = recievingData.get(idx).byteArrayList;
                 }
                 byte[] offarr = new byte[4];
+                byte[] lenarr = new byte[4];
                 for (int i = 0; i < 4; i++) {
                     offarr[i] = receive[i];
                 }
+                for (int i = 4; i < 8; i++) {
+                    lenarr[i - 4] = receive[i];
+                }
                 int offset = new BigInteger(offarr).intValue();
+                int lenset = new BigInteger(lenarr).intValue();
                 System.out.println("offset : " + offset);
+                System.out.println("len : " + lenset);
 
                 if (offset != 0) {
 
-                    for (int i = 1; i < messageMaxLen; i++) {
+                    for (int i = 8; i < lenset; i++) {
                         byteArrayList.add(receive[i]);
                     }
 
@@ -273,7 +279,12 @@ public class Peer implements Runnable {
 
             case FILE_RESPONSE:
                 System.out.println(name + " : There is a Response :" + iden);
-                files.add(new File(ss[1], ss[2], textOutofBytes(mess).toString().getBytes()));
+//                byte[] fileinB = textOutofBytes(mess).toString().getBytes();
+//                System.out.println();
+                byte[] fileinB = mess;
+                System.out.println("file in B" + fileinB.length);
+//                System.out.println("file in mess" + mess.length);
+                files.add(new File(ss[1], ss[2], fileinB));
                 Iterator<FileSearch> iterable = fileSearches.iterator();
                 while (iterable.hasNext()) {
                     FileSearch fileSearch = iterable.next();
